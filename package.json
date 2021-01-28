@@ -1,0 +1,29 @@
+{
+  "name": "dbconn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.ts",
+  "scripts": {
+    "build": "rm -rf compiled_js/ && tsc",
+    "start":"node compiled_js/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mysql": "^2.15.17",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "mysql": "^2.18.1",
+    "stream": "0.0.2",
+    "ts-node": "^9.1.1",
+    "util": "^0.12.3"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.11"
+  }
+}
