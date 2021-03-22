@@ -1,17 +1,19 @@
 // import {Db} from './models/db'
-import express from 'express';
+import express,{Request,Response,NextFunction,Application} from 'express';
+import mysql from 'mysql'
 import bodyParser from 'body-parser';
 import logger from './logger';
 import config from './config/config'
 import homeRouter from './router/homeRouter'
+import {Db} from './models/db'
 
 const NAMESPACE = 'SERVER'
 
-async function main(){
-    // await Db.init();
-    const app = express()
+const main = async () => {
+    await Db.init();
+    const app:Application = express()
     /** Logging the request */
-    .use((req,res,next)=>{
+    app.use((req:Request,res:Response,next:NextFunction)=>{
         logger.info(`${NAMESPACE}`,` [METHOD]: ${req.method} using ${req.url} on ${req.socket.remoteAddress}`)
 
         res.on('finish',()=>{
@@ -24,7 +26,7 @@ async function main(){
     .use(bodyParser.urlencoded({extended:false}))
     .use(bodyParser.json())
     /** Roules of API */
-    .use((req,res,next)=>{
+    .use((req:Request,res:Response,next:NextFunction)=>{
         res.header('Access-Control-Allow-Origin','*');
         res.header('Access-Control-Allow-Headers','Origin,X-Requested-With,Content-Type,Accept,Authorization',)
         
@@ -37,7 +39,7 @@ async function main(){
     /** Routes */
     .use('/',homeRouter)
     /** Error Handling */
-    .use((req,res,next)=>{
+    .use((req:Request,res:Response,next:NextFunction)=>{
         const err = new Error('Not Found')
 
         return res.status(404).json({
@@ -50,5 +52,8 @@ async function main(){
     })
 }
 
-main().then(()=>logger.info(`${NAMESPACE}`,'Starting'))
-      .catch(()=>logger.error(`${NAMESPACE}`,'App Crashed'));
+main().then(()=>{
+    logger.info(`${NAMESPACE}`,'Starting')
+    })
+      .catch((err)=>logger.error(`${NAMESPACE}`,`${err}`,'App Crashed'));
+
