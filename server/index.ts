@@ -6,6 +6,7 @@ import logger from './logger';
 import config from './config/config'
 import homeRouter from './router/homeRouter'
 import {Db} from './models/db'
+import path from 'path';
 
 const NAMESPACE = 'SERVER'
 
@@ -22,6 +23,8 @@ const main = async () => {
         })
         next();
     })
+    /** Views */
+    .use(express.static(path.join(__dirname,'public')))
     /** Body Parsing */
     .use(bodyParser.urlencoded({extended:false}))
     .use(bodyParser.json())
